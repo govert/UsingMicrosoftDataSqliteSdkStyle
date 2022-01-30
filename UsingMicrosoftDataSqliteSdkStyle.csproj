@@ -1,19 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net472;net6.0</TargetFrameworks>
+		<TargetFramework>net6.0</TargetFramework>
 
 		<!-- Optionally set this according to the Excel bitness that the add-in will run under.
-		     This can help the right native assemblies to be copied to a runtime-specific output directory, 
+		    This can help the right native assemblies to be copied to a runtime-specific output directory, 
 
-             Note that multiple RuntimeIdentifiers, as specified like 
-				<RuntimerIdentiers>win-x64;win-x86</RuntimeIdentifiers>
-			 is not supported by the .NET SDK build system, unlike the 'TargetFrameworks' which works great.
-			 See https://github.com/dotnet/sdk/issues/9795
+            Note that multiple RuntimeIdentifiers, as specified like 
+			<RuntimerIdentiers>win-x64;win-x86</RuntimeIdentifiers>
+			is not supported by the .NET SDK build system, unlike the 'TargetFrameworks' which works great.
+			See https://github.com/dotnet/sdk/issues/9795 and https://github.com/dotnet/sdk/issues/1017
+			
+			 So I use the Solution file's Platform configuration (changed from AnyCPU) to set the RuntimeIdentifier and Excel-DNA output.
 		-->
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-
-
+		<!--<RuntimeIdentifier>win-x86</RuntimeIdentifier>-->
+		
 		<!-- We don't need the extra 'ref' directory and reference assemblies for the Excel add-in -->
 		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 		
@@ -30,6 +32,17 @@
 
 	</PropertyGroup>
 
+    <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+		<ExcelDnaCreate32BitAddIn>false</ExcelDnaCreate32BitAddIn>
+		<ExcelDnaCreate64BitAddIn>true</ExcelDnaCreate64BitAddIn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(RuntimeIdentifier)' == 'win-x86'">
+		<ExcelDnaCreate32BitAddIn>true</ExcelDnaCreate32BitAddIn>
+		<ExcelDnaCreate64BitAddIn>false</ExcelDnaCreate64BitAddIn>
+	</PropertyGroup>
+
+	
 	<ItemGroup>
 		<PackageReference Include="ExcelDna.AddIn" Version="1.6.0-preview1" />
 		<PackageReference Include="Microsoft.Data.SQLite" Version="6.0.1" />
