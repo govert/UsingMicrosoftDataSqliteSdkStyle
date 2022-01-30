@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.Data.Sqlite;
+using ExcelDna.Integration;
+using System.IO;
 
 namespace UsingSQLite
 {
@@ -12,7 +14,9 @@ namespace UsingSQLite
         {
             if (_connection == null)
             {
-                _connection = new SqliteConnection(@"Data Source=C:\Work\Excel-DNA\Samples\UsingSQLiteMDS\Northwind.db");
+                var xllDirectory = Path.GetDirectoryName(ExcelDnaUtil.XllPath);
+                var dbPath = Path.Combine(xllDirectory, @"Data\Northwind.db");
+                _connection = new SqliteConnection($"Data Source={dbPath}"); _connection = new SqliteConnection(@"Data Source=C:\Work\Excel-DNA\Samples\UsingSQLiteMDS\Northwind.db");
                 _connection.Open();
 
                 _productNameCommand = new SqliteCommand("SELECT ProductName FROM Products WHERE ProductID = @ProductID", _connection);

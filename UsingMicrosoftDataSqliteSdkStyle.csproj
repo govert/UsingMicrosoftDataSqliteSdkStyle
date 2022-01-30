@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net6.0-windows</TargetFramework>
 
 		<!-- Optionally set this according to the Excel bitness that the add-in will run under.
 		    This can help the right native assemblies to be copied to a runtime-specific output directory, 
