@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net472;net6.0</TargetFrameworks>
+
+		<!-- Optionally set this according to the Excel bitness that the add-in will run under.
+		     This can help the right native assemblies to be copied to a runtime-specific output directory, 
+
+             Note that multiple RuntimeIdentifiers, as specified like 
+				<RuntimerIdentiers>win-x64;win-x86</RuntimeIdentifiers>
+			 is not supported by the .NET SDK build system, unlike the 'TargetFrameworks' which works great.
+			 See https://github.com/dotnet/sdk/issues/9795
+		-->
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+
+
+		<!-- We don't need the extra 'ref' directory and reference assemblies for the Excel add-in -->
+		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+		
+		<!-- We need all dependencies to be copied to the output directory, as-if we are an 'application' and not a 'library'.
+			 This property also sets the CopyLockFileAssemblies property to true.
+		-->
+		<EnableDynamicLoading>true</EnableDynamicLoading>
+
+		<!-- I'm commenting these out from the default Class Library template to make the code clearer, 
+				but that's just a personal preference  
+		-->
+		<!--<ImplicitUsings>enable</ImplicitUsings>-->
+		<!--<Nullable>enable</Nullable>-->
+
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ExcelDna.AddIn" Version="1.6.0-preview1" />
+		<PackageReference Include="Microsoft.Data.SQLite" Version="6.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Data\Northwind.db">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+</Project>
